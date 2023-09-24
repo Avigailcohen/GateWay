@@ -1,25 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using GateWay.Models.ImaggaAPISample;
+﻿using GateWay.Models;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using RestSharp;
 
 namespace GateWay.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class ImaggaController : ControllerBase
-    {
-        private readonly ImaggaSampleClass _imaggaSample;
-
-        public ImaggaController(ImaggaSampleClass imaggaSample)
+    [Route("api/imagga")]
+    
+        public class ImaggaController : ControllerBase
         {
-            _imaggaSample = imaggaSample;
-        }
+            [HttpGet]
+            public IActionResult CheckForIceCream(string imageUrl)
+            {
+                ImaggaSampleClass imaggaSample = new ImaggaSampleClass();
 
-        [HttpGet]
-        public ActionResult<string> CheckImageForIceCream(string imageUrl)
-        {
-            string result = _imaggaSample.ImaggaPic(imageUrl);
+                // קריאה לפונקציה שבודקת אם יש גלידה בתמונה
+                List<string> tags = imaggaSample.CheckImage(imageUrl);
 
-            return result;
+                // בדיקה אם "גלידה" נמצאת בתגים
+                bool containsIceCream = tags.Contains("ice cream");
+
+                return Ok(new { ContainsIceCream = containsIceCream });
+            }
         }
-    }
-}
+ }
+
+
+
+
+
