@@ -20,8 +20,7 @@ namespace GateWay.Controllers
 
                 // בדיקה אם "גלידה" נמצאת בתגים
                 bool containsIceCream = tags.Contains("ice cream");
-
-                return Ok(new { ContainsIceCream = containsIceCream });
+                return Ok(containsIceCream);
             }
         }
  }
