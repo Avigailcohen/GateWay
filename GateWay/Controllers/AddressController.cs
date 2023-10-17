@@ -12,24 +12,17 @@ namespace GateWay.Controllers
         
       
        [HttpGet(Name = "CheckAdd")]
-        public async Task<string> CheckAdd(string CityName,string StreetName)
+        public async Task<bool> CheckAdd(string CityName,string StreetName)
         {
             try
             {
                 var address = new AddressModel();
                 bool exist = await address.Check(CityName, StreetName);
-                if(exist)
-                {
-                    return "City exist";
-                }
-                else
-                {
-                    return "Not exsit";
-                }
+                return exist;
             }
             catch (Exception)
             {
-                return "ERROR";
+                return false;
             }
         }
     }

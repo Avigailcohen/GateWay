@@ -23,7 +23,7 @@ namespace GateWay.Controllers
 
 
         [HttpGet(Name = "GetCurrentWeather")]
-        public async Task<Weather> GetCurrentWeather(string cityNmae)//et the current weather by the given coordinates
+        public async Task<IActionResult> GetCurrentWeather(string cityNmae)//et the current weather by the given coordinates
         {
 
             try
@@ -36,16 +36,22 @@ namespace GateWay.Controllers
                 {
                     var content = await response.Content.ReadAsStringAsync();
                     var weatherResponse = JsonConvert.DeserializeObject<Weather>(content);
-                    return weatherResponse;
+
+                    return Ok(new { FeelsLike=weatherResponse.Main.FeelsLike, Humidity =weatherResponse.Main.Humidity, City =cityNmae});
                 }
 
-                return null;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+				else
+				{
+					// Return an error response.
+					return StatusCode((int)response.StatusCode);
+				}
+			}
+			catch (Exception ex)
+			{
+				// Return an error response.
+				return BadRequest(ex.Message);
+			}
 
-        }
+		}
     }
 }
