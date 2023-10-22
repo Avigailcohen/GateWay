@@ -7,25 +7,22 @@ namespace GateWay.Controllers
 {
     [ApiController]
     [Route("api/imagga")]
-    
-        public class ImaggaController : ControllerBase
+
+    public class ImaggaController : ControllerBase
+    {
+        [HttpGet]
+        public IActionResult CheckForIceCream(string imageUrl)
         {
-            [HttpGet]
-            public IActionResult CheckForIceCream(string imageUrl)
-            {
-                ImaggaSampleClass imaggaSample = new ImaggaSampleClass();
+            ImaggaSampleClass imaggaSample = new ImaggaSampleClass();
 
-                // קריאה לפונקציה שבודקת אם יש גלידה בתמונה
-                List<string> tags = imaggaSample.CheckImage(imageUrl);
+            
+            List<string> tags = imaggaSample.CheckImage(imageUrl);
+            //Console.WriteLine("All tags received from Imagga: " + string.Join(", ", tags));
 
-                // בדיקה אם "גלידה" נמצאת בתגים
-                bool containsIceCream = tags.Contains("ice cream");
-                return Ok(containsIceCream);
-            }
+            
+            bool containsIceCream = tags.Any(tag => tag.Equals("ice cream", StringComparison.OrdinalIgnoreCase));
+
+            return Ok(containsIceCream);
         }
- }
-
-
-
-
-
+    }
+}
